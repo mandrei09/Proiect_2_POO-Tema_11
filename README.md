@@ -25,5 +25,3 @@ moșteniri & encapsulare (0.5p).
 
 7 Rezolvarea corectă a cerințelor suplimentare corespunzatoare fiecarei
 teme – 1.5p.
-
-Se acordă punctaje parțiale
