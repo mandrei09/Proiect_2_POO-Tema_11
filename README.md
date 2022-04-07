@@ -12,11 +12,18 @@ Sa se defineasca o metoda de calculare a varstei persoanei din cnp, sa se citeas
 
 1 Toate clasele vor conține obligatoriu constructori de inițializare (0.25p), parametrizați (0.25p) și de copiere (0.25p); destructor (0.25p); operatorii „=” (0.5p), „>>” (0.5p), „<<” (0.5p) supraîncărcați corespunzător,
 moșteniri & encapsulare (0.5p).
+
 2 Clasele derivate trebuie sa contina constructori parametrizati (prin care sa se evidentieze transmiterea parametrilor catre constructorul din clasa de baza) si destructori. (1p)
+
 3 În fiecare proiect vor fi ilustrate conceptele de upcasting, downcasting, funcții virtuale (pure – unde se consideră mai natural) – 1.5p (0.5p / cerință)
+
 4 Utilizarea de variabile și de funcții statice – 1p
+
 5 Citirea informațiilor complete a n obiecte, memorarea și afișarea acestora – 0.5p
+
 6 Meniu interactiv – 0.5p
+
 7 Rezolvarea corectă a cerințelor suplimentare corespunzatoare fiecarei
 teme – 1.5p.
+
 Se acordă punctaje parțiale
