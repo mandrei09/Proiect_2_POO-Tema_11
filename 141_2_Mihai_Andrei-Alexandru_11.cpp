@@ -224,7 +224,7 @@ public:
         // cout<<"Default (Abonat) contructor called\n";
     }
 
-    Abonat(string nume, string cnp, int nrMaxCarti, int nrCartiImprumutate, int pretAbonament)
+    Abonat(string nume,string cnp,int nrMaxCarti, int nrCartiImprumutate, int pretAbonament)
     {
 
         // cout<<"Parameterized (Abonat) contructor called\n";
@@ -518,8 +518,7 @@ public:
     {
         cout << "\nSe va elimina abonatul cu urmatoarele date:\n";
         cout << d.abonati[index];
-
-        //d.abonati_stersi[++Nr_Abonati_Stersi]=d.abonati[index];
+;
         d.Nr_Abonati_Stersi++;
         d.abonati_stersi[d.Nr_Abonati_Stersi]=d.abonati[index];
         deleted++;
@@ -545,7 +544,7 @@ public:
             else i++;
     }
 
-    // Funtie de creare a unui nou abonat si de aadaugare a lui in dosar.
+    // Funtie de creare a unui nou abonat si de adaugare a lui in dosar.
     void adaugare_abonat(Dosar &d, int index)
     {
         cout << "\nSe va adauga un abonat la pozitia " << index << " cu urmatoarele date:\n\n";
@@ -775,13 +774,12 @@ int main()
                                     cout << "\n------------------------------------------------------------------------------------\n\n";
                                     cout<<"Se va afisa numarul de abonati care au fost stersi din dosarul selectat. \n";
                                     dosare[numar_dosar].afisare_nr_abonati_stersi();
-
-                                    //!!!!!!!!!!!!
                                 }
                                 else
                                     if(optiune_submeniu==13){
                                         cout << "\n------------------------------------------------------------------------------------\n\n";
                                         cout<<"Se va adauga un abonat nou la dosarul selectat la primul index. \n";
+                                        
                                         dosare[numar_dosar].adaugare_abonat(dosare[numar_dosar],1);
                                     }
                                     else
@@ -867,6 +865,6 @@ int main()
             break;
         }
     }
-    //functie virtuala
+    
     return 0;
 }
