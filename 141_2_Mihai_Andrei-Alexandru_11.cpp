@@ -1,4 +1,4 @@
-// Tema 11. 
+// Tema 11.
 // Mihai Andrei-Alexandru, grupa 141, 30.03.2022
 
 #include <iostream>
@@ -147,9 +147,10 @@ public:
         cout << zi_nastere << "." << luna_nastere << "." << an_nastere << " .\n";
     }
 
-    virtual void afisare_tip(){
+    virtual void afisare_tip()
+    {
 
-        cout<<"\nDatele afisate sunt de tip PERSOANA.\n";
+        cout << "\nDatele afisate sunt de tip PERSOANA.\n";
     }
 
     int validare_cnp(string CNP)
@@ -190,7 +191,8 @@ istream &operator>>(istream &is, Persoana &p1)
     is >> p1.nume;
     cout << "Dati CNP-ul persoanei: ";
     is >> p1.cnp;
-    while(p1.validare_cnp(p1.cnp) != 1){
+    while (p1.validare_cnp(p1.cnp) != 1)
+    {
         cout << "Dati CNP-ul persoanei: ";
         is >> p1.cnp;
     }
@@ -206,7 +208,8 @@ ostream &operator<<(ostream &out, const Persoana &p1)
     return out;
 }
 
-void tip(Persoana *p){
+void tip(Persoana *p)
+{
     p->afisare_tip();
 }
 
@@ -224,7 +227,7 @@ public:
         // cout<<"Default (Abonat) contructor called\n";
     }
 
-    Abonat(string nume,string cnp,int nrMaxCarti, int nrCartiImprumutate, int pretAbonament)
+    Abonat(string nume, string cnp, int nrMaxCarti, int nrCartiImprumutate, int pretAbonament)
     {
 
         // cout<<"Parameterized (Abonat) contructor called\n";
@@ -350,8 +353,9 @@ public:
         return *this;
     }
 
-    void afisare_tip(){
-        cout<<"\nDatele afisate sunt de tip abonat.\n";
+    void afisare_tip()
+    {
+        cout << "\nDatele afisate sunt de tip abonat.\n";
     }
 };
 
@@ -430,7 +434,7 @@ class Dosar : public Abonat
 protected:
     Abonat *abonati;
     int lungime;
-    int Nr_Abonati_Stersi=0; 
+    int Nr_Abonati_Stersi = 0;
     Persoana abonati_stersi[101];
     static int deleted;
 
@@ -481,7 +485,8 @@ public:
         return abonati;
     }
 
-    Abonat Get_Abonat_Index(int index){
+    Abonat Get_Abonat_Index(int index)
+    {
         return abonati[index];
     }
 
@@ -518,45 +523,92 @@ public:
     {
         cout << "\nSe va elimina abonatul cu urmatoarele date:\n";
         cout << d.abonati[index];
-;
+        ;
         d.Nr_Abonati_Stersi++;
-        d.abonati_stersi[d.Nr_Abonati_Stersi]=d.abonati[index];
+        d.abonati_stersi[d.Nr_Abonati_Stersi] = d.abonati[index];
         deleted++;
 
         for (int i = index + 1; i <= d.lungime; i++)
             d.abonati[i - 1] = d.abonati[i];
         d.lungime--;
-
     }
 
     // Functie care elimina dintr-un dosar toti abonatii care au depasit limita abonamentului
-    void eliminare_abonati_limita(Dosar &d,int index_dosar)
+    void eliminare_abonati_limita(Dosar &d, int index_dosar)
     {
-        int ok=0;
+        int ok = 0;
         for (int i = 1; i <= d.lungime;)
-            if (d.abonati[i].Get_Limita() == 1){
-                if(ok==0){
-                    cout<<"\nDOSARUL "<<index_dosar<<":\n";
-                    ok=1;
+            if (d.abonati[i].Get_Limita() == 1)
+            {
+                if (ok == 0)
+                {
+                    cout << "\nDOSARUL " << index_dosar << ":\n";
+                    ok = 1;
                 }
                 eliminare_abonat(d, i);
             }
-            else i++;
+            else
+                i++;
     }
 
     // Funtie de creare a unui nou abonat si de adaugare a lui in dosar.
-    void adaugare_abonat(Dosar &d, int index)
+    void adaugare_abonat(Dosar &d, int index, int identificator)
     {
-        cout << "\nSe va adauga un abonat la pozitia " << index << " cu urmatoarele date:\n\n";
-        
-        Abonat a1; cin>>a1;
+        if (identificator == 0)
+        {
+            cout << "\nSe va adauga un abonat la pozitia " << index << " cu urmatoarele date:\n\n";
+            Abonat a1;
+            cin >> a1;
 
-        for (int i = index; i <= d.lungime; i++)
-            d.abonati[i + 1] = d.abonati[i];
-        d.lungime++;
+            for (int i = index; i <= d.lungime; i++)
+                d.abonati[i + 1] = d.abonati[i];
+            d.lungime++;
 
-        d.abonati[index] = a1;
+            d.abonati[index] = a1;
+        }
+        else
+        {
+            cout << "\nSe va creea un abonament persoanei cu urmatoarele date:\n\n";
+            Persoana p1;
+            cin >> p1;
+            if (dynamic_cast<Abonat *>(&p1) == NULL)
+            {
+                int nrMaxCarti, nrCartiImprumutate, pretAbonament;
+                cout << "Dati numarul maxim de carti: ";
+                cin >> nrMaxCarti;
+                cout << "Dati numarul de carti imprumutate: ";
+                cin >> nrCartiImprumutate;
+                cout << "Dati pretul abonamentului : ";
+                cin >> pretAbonament;
 
+                Abonat a1(p1.Get_Nume(), p1.Get_CNP(), nrMaxCarti, nrCartiImprumutate, pretAbonament);
+
+                if (nrCartiImprumutate > nrMaxCarti)
+                {
+                    a1.Set_Limita(1);
+                    cout << "\n!!! Abonatul a depasit limita abonamentului, avand numarul de carti imprumutate (";
+                    cout << nrCartiImprumutate << ") mai mare decat numarul maxim de carti permis in abonamentul sau (";
+                    cout << nrMaxCarti << ") .!!! \n";
+                }
+                else if (nrMaxCarti > pretAbonament)
+                {
+                    a1.Set_Limita(2);
+                    cout << "\n!!! Abonatul a depasit limita abonamentului, avand numarul maxim de carti permis in abonamentul sau (";
+                    cout << nrMaxCarti << ") mai mare decat pretul abonamentului sau (";
+                    cout << pretAbonament << ") .!!! \n";
+                }
+                else
+                {
+                    a1.Set_Limita(0);
+                    cout << "\nAbonatul nu a depasit limita.\n";
+                }
+                for (int i = index; i <= d.lungime; i++)
+                    d.abonati[i + 1] = d.abonati[i];
+                d.lungime++;
+
+                d.abonati[index] = a1;
+            }
+        }
     }
 
     // Functie care afiseaza numarul de abonati care au fost stersi din toate dosarele
@@ -581,11 +633,12 @@ public:
             cout << "\nNumarul de abonati care au fost eliminati din dosar este de " << Nr_Abonati_Stersi << "." << endl;
     }
 
-    void afisare_abonati_stersi(Dosar &d,int index_dosar){
+    void afisare_abonati_stersi(Dosar &d, int index_dosar)
+    {
         int i;
-        cout<<"\nDOSARUL "<<index_dosar<<":\n";
-        for(i=1;i<=d.Nr_Abonati_Stersi;i++)
-            cout<<d.abonati_stersi[i];
+        cout << "\nDOSARUL " << index_dosar << ":\n";
+        for (i = 1; i <= d.Nr_Abonati_Stersi; i++)
+            cout << d.abonati_stersi[i];
 
         tip(d.abonati_stersi);
     }
@@ -727,7 +780,7 @@ int main()
                 }
 
                 int optiune_submeniu;
-                while(true)
+                while (true)
                 {
 
                     cout << "\n------------------------------------------------------------------------------------\n\n";
@@ -741,72 +794,90 @@ int main()
                     cout << "15. Iesire din submeniu.\n\n";
                     cout << "Optiune: ";
 
-                    cin>>optiune_submeniu;
+                    cin >> optiune_submeniu;
 
-                    if(optiune_submeniu==9){
+                    if (optiune_submeniu == 9)
+                    {
                         cout << "\n------------------------------------------------------------------------------------\n\n";
-                        cout << "Se vor afisa datele din dosarul selectat, cu indexul "<<numar_dosar<<" .\n";
-                        cout<<dosare[numar_dosar];
+                        cout << "Se vor afisa datele din dosarul selectat, cu indexul " << numar_dosar << " .\n";
+                        cout << dosare[numar_dosar];
                     }
-                    else
-                        if(optiune_submeniu==10){
-                            cout << "\n------------------------------------------------------------------------------------\n\n";
-                            int index_abonat;
-                            cout<<"\nDati indexul abonatului pe care doriti sa-l stergeti (un numar natural intre 1 si "<<dosare[numar_dosar].Get_Lungime()<<") .\n";
-                            cin>>index_abonat;
-                            while (index_abonat < 1 || index_abonat > dosare[numar_dosar].Get_Lungime())
-                            {
-                                cout << "\nAti introdus un index de dosar invalid, va rog introduceti in consola o valoare cuprinsa intre 1 si " << n << '\n';
-                                cout << "Introduceti indexul abonatului pe care doriti sa il afisati (un numar de la 1 la " << dosare[numar_dosar].Get_Lungime() << "):";
-                                cin >> index_abonat;
-                            }
-                            cout << "Se va sterge abonatul cu indexul "<<index_abonat<<" din dosar .\n";
-                            dosare[numar_dosar].eliminare_abonat(dosare[numar_dosar],index_abonat);
+                    else if (optiune_submeniu == 10)
+                    {
+                        cout << "\n------------------------------------------------------------------------------------\n\n";
+                        int index_abonat;
+                        cout << "\nDati indexul abonatului pe care doriti sa-l stergeti (un numar natural intre 1 si " << dosare[numar_dosar].Get_Lungime() << ") .\n";
+                        cin >> index_abonat;
+                        while (index_abonat < 1 || index_abonat > dosare[numar_dosar].Get_Lungime())
+                        {
+                            cout << "\nAti introdus un index de dosar invalid, va rog introduceti in consola o valoare cuprinsa intre 1 si " << n << '\n';
+                            cout << "Introduceti indexul abonatului pe care doriti sa il afisati (un numar de la 1 la " << dosare[numar_dosar].Get_Lungime() << "):";
+                            cin >> index_abonat;
                         }
-                        else
-                            if(optiune_submeniu==11){
-                                cout << "\n------------------------------------------------------------------------------------\n\n";
-                                cout<<"Se vor elimina din dosar toti abonatii care au depasit limita abonamentului.\n";
-                                dosare[numar_dosar].eliminare_abonati_limita(dosare[numar_dosar],numar_dosar);
+                        cout << "Se va sterge abonatul cu indexul " << index_abonat << " din dosar .\n";
+                        dosare[numar_dosar].eliminare_abonat(dosare[numar_dosar], index_abonat);
+                    }
+                    else if (optiune_submeniu == 11)
+                    {
+                        cout << "\n------------------------------------------------------------------------------------\n\n";
+                        cout << "Se vor elimina din dosar toti abonatii care au depasit limita abonamentului.\n";
+                        dosare[numar_dosar].eliminare_abonati_limita(dosare[numar_dosar], numar_dosar);
+                    }
+                    else if (optiune_submeniu == 12)
+                    {
+                        cout << "\n------------------------------------------------------------------------------------\n\n";
+                        cout << "Se va afisa numarul de abonati care au fost stersi din dosarul selectat. \n";
+                        dosare[numar_dosar].afisare_nr_abonati_stersi();
+                    }
+                    else if (optiune_submeniu == 13)
+                    {
+                        cout << "\n------------------------------------------------------------------------------------\n\n";
+                        while (true)
+                        {
+                            cout << "Doriti sa adaugati un abonat la dosar sau sa creati un abonament pentru o persoana? [A/P] \n";
+                            char optiune;
+                            cin >> optiune;
+                            cin.get();
+                            if (optiune == 'A' or optiune == 'a')
+                            {
+                                dosare[numar_dosar].adaugare_abonat(dosare[numar_dosar], 1, 0);
+                                break;
+                            }
+                            else if (optiune == 'P' or optiune == 'p')
+                            {
+                                dosare[numar_dosar].adaugare_abonat(dosare[numar_dosar], 1, 1);
+                                break;
                             }
                             else
-                                if(optiune_submeniu==12){
-                                    cout << "\n------------------------------------------------------------------------------------\n\n";
-                                    cout<<"Se va afisa numarul de abonati care au fost stersi din dosarul selectat. \n";
-                                    dosare[numar_dosar].afisare_nr_abonati_stersi();
-                                }
-                                else
-                                    if(optiune_submeniu==13){
-                                        cout << "\n------------------------------------------------------------------------------------\n\n";
-                                        cout<<"Se va adauga un abonat nou la dosarul selectat la primul index. \n";
-                                        
-                                        dosare[numar_dosar].adaugare_abonat(dosare[numar_dosar],1);
-                                    }
-                                    else
-                                        if(optiune_submeniu==14){
-                                            cout << "\n------------------------------------------------------------------------------------\n\n";
-                                            int index_abonat;
-                                            cout<<"\nDati indexul abonatului caruia doriti sa-i aflati datele (un numar natural intre 1 si "<<dosare[numar_dosar].Get_Lungime()<<") :\n";
-                                            cin >> index_abonat;
-                                            while (index_abonat < 1 || index_abonat > dosare[numar_dosar].Get_Lungime())
-                                            {
-                                                cout << "\nAti introdus un index de dosar invalid, va rog introduceti in consola o valoare cuprinsa intre 1 si " << n << '\n';
-                                                cout <<"\nDati indexul abonatului caruia doriti sa-i aflati datele (un numar natural intre 1 si "<<dosare[numar_dosar].Get_Lungime()<<") :\n";
-                                                cin >> index_abonat;
-                                            }
-                                            cout << "Se vor afisa datele abonatului "<<index_abonat<<" din dosarul selectat .\n";
-                                            dosare[numar_dosar].date_suplimentare(dosare[numar_dosar].Get_Abonat_Index(index_abonat));
-                                        }
-                                        else
-                                            if(optiune_submeniu==15){
-                                                cout << "\n------------------------------------------------------------------------------------\n\n";
-                                                cout<<"Se va iesi din acest submeniu.\n";
-                                                break;
-                                            }
-                                            else{
-                                                cout << "\nOPTIUNE INVALIDA, VA ROG SELECTATI UNA DINTRE CELE DE MAI JOS.\n\n";
-                                                cout << "------------------------------------------------------------------------------------\n\n";
-                                            }
+                                cout << "\nOptiune invalida!\n";
+                        }
+                    }
+                    else if (optiune_submeniu == 14)
+                    {
+                        cout << "\n------------------------------------------------------------------------------------\n\n";
+                        int index_abonat;
+                        cout << "\nDati indexul abonatului caruia doriti sa-i aflati datele (un numar natural intre 1 si " << dosare[numar_dosar].Get_Lungime() << ") :\n";
+                        cin >> index_abonat;
+                        while (index_abonat < 1 || index_abonat > dosare[numar_dosar].Get_Lungime())
+                        {
+                            cout << "\nAti introdus un index de dosar invalid, va rog introduceti in consola o valoare cuprinsa intre 1 si " << n << '\n';
+                            cout << "\nDati indexul abonatului caruia doriti sa-i aflati datele (un numar natural intre 1 si " << dosare[numar_dosar].Get_Lungime() << ") :\n";
+                            cin >> index_abonat;
+                        }
+                        cout << "Se vor afisa datele abonatului " << index_abonat << " din dosarul selectat .\n";
+                        dosare[numar_dosar].date_suplimentare(dosare[numar_dosar].Get_Abonat_Index(index_abonat));
+                    }
+                    else if (optiune_submeniu == 15)
+                    {
+                        cout << "\n------------------------------------------------------------------------------------\n\n";
+                        cout << "Se va iesi din acest submeniu.\n";
+                        break;
+                    }
+                    else
+                    {
+                        cout << "\nOPTIUNE INVALIDA, VA ROG SELECTATI UNA DINTRE CELE DE MAI JOS.\n\n";
+                        cout << "------------------------------------------------------------------------------------\n\n";
+                    }
                 }
             }
             else
@@ -817,11 +888,11 @@ int main()
         case 5:
         {
             cout << "\n------------------------------------------------------------------------------------\n\n";
-            cout<<"Se vor elimina din toate dosarele abonatii care au depasit limita abonamentului .\n";
+            cout << "Se vor elimina din toate dosarele abonatii care au depasit limita abonamentului .\n";
             if (ok == 1)
             {
                 for (int i = 1; i <= n; i++)
-                    dosare[i].eliminare_abonati_limita(dosare[i],i);
+                    dosare[i].eliminare_abonati_limita(dosare[i], i);
             }
             else
                 cout << "\nNU AU FOST MEMORATE DATE IN NICIUN DOSAR, VA ROG INTRODUCETI COMANDA 1 PENTRU O INTRODUCE DATE IN DOSARE!\n";
@@ -830,7 +901,8 @@ int main()
 
         case 6:
         {
-            if(ok==1){
+            if (ok == 1)
+            {
                 cout << "\n------------------------------------------------------------------------------------\n\n";
                 cout << "\nSe va afisa numarul de abonati care au fost stersi din toate dosarele.\n";
                 dosare->print_deleted();
@@ -842,10 +914,11 @@ int main()
 
         case 7:
         {
-            if(ok==1){
-                cout<< "\nSe va afisa pe ecran pentru fiecare dosar lista persoanelor care au fost sterse.\n";
-                for(int i=1;i<=n;i++)
-                    dosare[i].afisare_abonati_stersi(dosare[i],i);
+            if (ok == 1)
+            {
+                cout << "\nSe va afisa pe ecran pentru fiecare dosar lista persoanelor care au fost sterse.\n";
+                for (int i = 1; i <= n; i++)
+                    dosare[i].afisare_abonati_stersi(dosare[i], i);
             }
             else
                 cout << "\nNU AU FOST MEMORATE DATE IN NICIUN DOSAR, VA ROG INTRODUCETI COMANDA 1 PENTRU O INTRODUCE DATE IN DOSARE!\n";
@@ -865,6 +938,6 @@ int main()
             break;
         }
     }
-    
+
     return 0;
 }
