@@ -227,16 +227,11 @@ public:
         // cout<<"Default (Abonat) contructor called\n";
     }
 
-    Abonat(string nume, string cnp, int nrMaxCarti, int nrCartiImprumutate, int pretAbonament)
+    Abonat(string nume, string cnp, int nrMaxCarti, int nrCartiImprumutate, int pretAbonament):Persoana(nume,cnp)
     {
 
         // cout<<"Parameterized (Abonat) contructor called\n";
 
-        this->nume = nume;
-        if (validare_cnp(cnp) == 1)
-            this->cnp = cnp;
-        else
-            this->cnp = "-1";
         this->nrMaxCarti = nrMaxCarti;
         this->nrCartiImprumutate = nrCartiImprumutate;
         this->pretAbonament = pretAbonament;
@@ -260,15 +255,10 @@ public:
     }
 
     // copy constructor
-    Abonat(const Abonat &a1)
+    Abonat(const Abonat &a1):Persoana(a1.nume,a1.cnp)
     {
 
         // cout<<"(Abonat) copy constructor called\n";
-        nume = a1.nume;
-        if (validare_cnp(a1.cnp) == 1)
-            cnp = a1.cnp;
-        else
-            cnp = "-1";
         nrMaxCarti = a1.nrMaxCarti;
         nrCartiImprumutate = a1.nrCartiImprumutate;
         pretAbonament = a1.pretAbonament;
